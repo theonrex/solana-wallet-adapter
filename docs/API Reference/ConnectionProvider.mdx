@@ -2,6 +2,20 @@
 sidebar_position: 1
 ---
 
+### Overview
+The `ConnectionProvider` is a React component responsible for managing and providing a Solana network connection via React Context.
+
+### Functionality
+It establishes a connection to a specified Solana cluster (e.g., devnet, testnet, mainnet) and makes it accessible to child components.
+
+### Parameters
+- **endpoint** (`string`): The Solana RPC endpoint URL.
+- **children** (`ReactNode`): The components that will have access to the connection.
+
+### Returns
+A React component that supplies the Solana connection context to its children.
+
+
 # ConnectionProvider
 
 ## What is ConnectionProvider?
@@ -33,4 +47,23 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     </ConnectionProvider>
   );
 }
+```
+
+
+```tsx
+import React, { useMemo } from 'react';
+import { ConnectionProvider } from '@solana/wallet-adapter-react';
+import { clusterApiUrl } from '@solana/web3.js';
+
+const App = ({ children }) => {
+  const endpoint = useMemo(() => clusterApiUrl('devnet'), []);
+  
+  return (
+    <ConnectionProvider endpoint={endpoint}>
+      {children}
+    </ConnectionProvider>
+  );
+};
+
+export default App;
 ```

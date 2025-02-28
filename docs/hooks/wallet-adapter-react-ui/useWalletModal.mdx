@@ -1,0 +1,42 @@
+# useWalletModal
+
+## Overview
+`useWalletModal` is a React hook provided by `@solana/wallet-adapter-react-ui` that allows developers to manage the visibility of the wallet selection modal in a Solana-based frontend application. It enables components to open and close the modal dynamically.
+
+## Import
+To use `useWalletModal`, import it from `@solana/wallet-adapter-react-ui`:
+
+```tsx
+import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+```
+
+## Usage
+This hook provides access to the wallet modal's state and a function to toggle its visibility. Ensure that `WalletModalProvider` is rendered at a higher level in the component tree.
+
+```tsx
+import React from 'react';
+import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+
+const OpenWalletButton = () => {
+    const { visible, setVisible } = useWalletModal();
+
+    return (
+        <button onClick={() => setVisible(!visible)}>
+            {visible ? 'Close Wallet Modal' : 'Open Wallet Modal'}
+        </button>
+    );
+};
+
+export default OpenWalletButton;
+```
+
+## Parameters
+The `useWalletModal` hook does not take any parameters.
+
+## Return Type
+The hook returns an object with the following properties:
+
+| Property  | Type      | Description |
+|-----------|----------|-------------|
+| `visible` | `boolean` | Indicates whether the wallet modal is currently open. |
+| `setVisible` | `(open: boolean) => void` | Function to set the visibility of the modal. |

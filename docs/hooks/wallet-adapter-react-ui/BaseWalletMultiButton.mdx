@@ -1,0 +1,78 @@
+
+---
+
+# **BaseWalletMultiButton**  
+
+## **Overview**  
+`BaseWalletMultiButton` is a UI component from `@solana/wallet-adapter-react-ui` that provides an all-in-one wallet interaction button. It allows users to:  
+- Connect to a wallet  
+- Display the connected wallet address  
+- Copy the wallet address  
+- Change the connected wallet  
+- Disconnect from the wallet  
+
+## **Import**  
+To use `BaseWalletMultiButton`, import it as follows:  
+```tsx
+import { BaseWalletMultiButton } from '@solana/wallet-adapter-react-ui';
+```
+
+## **Usage**  
+Use `BaseWalletMultiButton` to handle wallet interactions seamlessly.  
+```tsx
+import React from 'react';
+import { BaseWalletMultiButton } from '@solana/wallet-adapter-react-ui';
+
+export default function WalletButton() {
+    return (
+        <BaseWalletMultiButton
+            labels={{
+                'no-wallet': 'Connect Wallet',
+                'has-wallet': 'Connect',
+                connecting: 'Connecting...',
+                'copy-address': 'Copy Address',
+                copied: 'Copied!',
+                'change-wallet': 'Change Wallet',
+                disconnect: 'Disconnect',
+            }}
+        />
+    );
+}
+```
+
+## **Props (Parameters)**  
+`BaseWalletMultiButton` accepts the following props:  
+
+| **Prop**   | **Type**  | **Description** |
+|------------|-----------|----------------|
+| `labels`  | `{ [TButtonState: string]: string }` | A mapping of button states (`connecting`, `no-wallet`, etc.) to display labels. |
+| `disabled` | `boolean` | (Optional) If `true`, disables the button. |
+| `onClick`  | `(event: React.MouseEvent<HTMLButtonElement>) => void` | (Optional) Callback function triggered when the button is clicked. |
+
+## **Return Type**  
+`BaseWalletMultiButton` returns a React component that renders a styled multi-functional wallet button.  
+
+## **Example with Custom Labels**  
+```tsx
+import React from 'react';
+import { BaseWalletMultiButton } from '@solana/wallet-adapter-react-ui';
+
+export default function WalletMenuExample() {
+    return (
+        <BaseWalletMultiButton
+            labels={{
+                'no-wallet': 'Sign In',
+                'has-wallet': 'Connect',
+                connecting: 'Connecting...',
+                'copy-address': 'Copy Wallet Address',
+                copied: 'Copied!',
+                'change-wallet': 'Switch Wallet',
+                disconnect: 'Logout',
+            }}
+        />
+    );
+}
+```
+
+---
+

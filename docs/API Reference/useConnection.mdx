@@ -1,0 +1,43 @@
+---
+sidebar_position: 6
+---
+
+## useConnection
+
+### Overview
+The `useConnection` hook provides direct access to the Solana blockchain connection.
+
+### Functionality
+Facilitates interaction with the blockchain by returning a connection object for making RPC requests and querying accounts.
+
+### Returns
+An object containing:
+- `connection`: An instance of Solana `Connection`.
+
+### Example
+```tsx
+import React, { useEffect, useState } from 'react';
+import { useConnection } from '@solana/wallet-adapter-react';
+import { LAMPORTS_PER_SOL } from '@solana/web3.js';
+
+const BalanceDisplay = () => {
+  const { connection } = useConnection();
+  const [balance, setBalance] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchBalance = async () => {
+      const publicKey = /* specify public key */;
+      if (publicKey) {
+        const lamports = await connection.getBalance(publicKey);
+        setBalance(lamports / LAMPORTS_PER_SOL);
+      }
+    };
+
+    fetchBalance();
+  }, [connection]);
+
+  return <div>Balance: {balance} SOL</div>;
+};
+
+export default BalanceDisplay;
+```

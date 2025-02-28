@@ -114,3 +114,42 @@ import { SpotWalletAdapter } from '@solana/wallet-adapter-spot';       // Spot W
 import { AvanaWalletAdapter } from '@solana/wallet-adapter-avana';        // Avana Wallet: A Solana-specific wallet designed for smooth interaction with Solana-based dApps.
 
 ```
+
+
+## WalletProvider
+
+### Overview
+The `WalletProvider` component manages wallet connections and state.
+
+### Functionality
+Wraps an application to provide wallet connection functionality and handles errors gracefully.
+
+### Parameters
+- **wallets** (`WalletAdapter[]`): An array of supported wallets.
+- **autoConnect** (`boolean`): Enables automatic reconnection.
+- **onError** (`(error: WalletError) => void`): Error handling callback.
+- **children** (`ReactNode`): Child components that require wallet access.
+
+### Returns
+A React context provider that manages wallet connections.
+
+### Example
+```tsx
+import React, { useMemo } from 'react';
+import { WalletProvider } from '@solana/wallet-adapter-react';
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
+
+const WalletManager = ({ children }) => {
+  const wallets = useMemo(() => [new PhantomWalletAdapter()], []);
+
+  return (
+    <WalletProvider wallets={wallets} autoConnect>
+      {children}
+    </WalletProvider>
+  );
+};
+
+export default WalletManager;
+```
+```
+

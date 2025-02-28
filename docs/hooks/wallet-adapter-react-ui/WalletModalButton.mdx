@@ -1,0 +1,45 @@
+# WalletModalButton 
+
+## Overview
+`WalletModalButton` is a React component from the `@solana/wallet-adapter-react-ui` package. It provides a button that, when clicked, opens the wallet modal, allowing users to select and connect their Solana wallet.
+
+## Import
+To use `WalletModalButton`, import it from `@solana/wallet-adapter-react-ui`:
+
+```tsx
+import { WalletModalButton } from '@solana/wallet-adapter-react-ui';
+```
+
+## Usage
+The `WalletModalButton` component can be used within a React component to provide a button for users to open the wallet selection modal.
+
+```tsx
+import React from 'react';
+import { WalletModalButton } from '@solana/wallet-adapter-react-ui';
+
+const ConnectWallet = () => {
+    return (
+        <WalletModalButton />
+    );
+};
+
+export default ConnectWallet;
+```
+
+## Examples
+### Custom Styling and Text
+You can customize the button by passing props like `className` and changing the button text:
+
+```tsx
+<WalletModalButton className="custom-wallet-button">Connect Your Wallet</WalletModalButton>
+```
+
+## Parameters
+`WalletModalButton` accepts all standard button properties along with additional props:
+
+| Prop       | Type                        | Default           | Description |
+|------------|-----------------------------|-------------------|-------------|
+| `children` | `ReactNode`                 | `'Select Wallet'` | Text or element to display inside the button. |
+| `onClick`  | `(event: MouseEvent) => void` | `undefined`       | Function to call when the button is clicked. |
+| `...props` | `ButtonProps`               | `undefined`       | Other button props such as `className`, `disabled`, etc. |
+

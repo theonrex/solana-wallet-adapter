@@ -1,0 +1,28 @@
+# WalletIcon
+
+## Overview
+The `WalletIcon` component is a React functional component that displays the icon of a connected Solana wallet. It is part of the `@solana/wallet-adapter-react-ui` package and is primarily used to visually represent the selected wallet within a user interface.
+
+## Import
+```tsx
+import { WalletIcon } from '@solana/wallet-adapter-react-ui';
+```
+
+## Usage
+The `WalletIcon` component requires a `wallet` prop, which contains the adapter details, including the wallet's icon and name.
+
+```tsx
+import { WalletIcon } from '@solana/wallet-adapter-react-ui';
+import { useWallet } from '@solana/wallet-adapter-react';
+
+const MyComponent = () => {
+    const { wallet } = useWallet();
+    
+    return <WalletIcon wallet={wallet} />;
+};
+```
+
+
+## Return Type
+Returns an `<img>` element displaying the wallet's icon, or `null` if no wallet is connected.
+

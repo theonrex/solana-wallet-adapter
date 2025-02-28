@@ -35,8 +35,6 @@ const config: Config = {
       {
         docs: {
           sidebarPath: "./sidebars.ts",
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
           editUrl: "https://github.com/theonrex/solana-wallet-adapter-docs",
         },
         // blog: {
@@ -56,6 +54,18 @@ const config: Config = {
         theme: {
           customCss: "./src/css/custom.css",
         },
+        sitemap: {
+          lastmod: "date",
+          changefreq: "weekly",
+          priority: 0.5,
+          ignorePatterns: ["/tags/**"],
+          filename: "sitemap.xml",
+          createSitemapItems: async (params) => {
+            const { defaultCreateSitemapItems, ...rest } = params;
+            const items = await defaultCreateSitemapItems(rest);
+            return items.filter((item) => !item.url.includes("/page/"));
+          },
+        },
       } satisfies Preset.Options,
     ],
   ],
@@ -63,6 +73,18 @@ const config: Config = {
   themeConfig: {
     // Replace with your project's social card
     image: "img/solana.jpg",
+    colorMode: {
+      defaultMode: "dark",
+      disableSwitch: true,
+      respectPrefersColorScheme: false,
+    },
+    docs: {
+      versionPersistence: "localStorage",
+      sidebar: {
+        hideable: false,
+        autoCollapseCategories: false,
+      },
+    },
     navbar: {
       title: "SolanaWalletAdapter+",
       logo: {
@@ -72,13 +94,13 @@ const config: Config = {
       items: [
         {
           type: "docSidebar",
-          sidebarId: "tutorialSidebar",
+          sidebarId: "docs",
           position: "right",
           label: "Documentation",
         },
         // { to: "/blog", label: "Blog", position: "left" },
         {
-          href: "https://github.com/facebook/docusaurus",
+          href: "https://github.com/theonrex/solana-wallet-adapter-docs",
           label: "GitHub",
           position: "right",
         },
@@ -131,6 +153,16 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
+
+    plugins: [
+      [
+        "vercel-analytics",
+        {
+          debug: true,
+          mode: "auto",
+        },
+      ],
+    ],
   } satisfies Preset.ThemeConfig,
 };
 

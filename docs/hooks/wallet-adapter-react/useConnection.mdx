@@ -1,0 +1,139 @@
+---
+sidebar_position: 6
+---
+## Overview
+`useConnection` is a hook provided by `@solana/wallet-adapter-react` that allows React components to access the current Solana `Connection` object from the context. This `Connection` object is used for interacting with the Solana blockchain, such as sending transactions, querying accounts, and fetching blockchain state.
+
+### **Import**
+```ts
+import { useConnection } from '@solana/wallet-adapter-react';
+```
+
+
+
+### Example 1: Displaying Wallet Balance
+
+```tsx
+import React, { useEffect, useState } from "react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+
+const BalanceDisplay = () => {
+  const { connection } = useConnection();
+  const { publicKey } = useWallet(); // Get the wallet public key
+  const [balance, setBalance] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchBalance = async () => {
+      if (publicKey) {
+        // Check if publicKey is available
+        const lamports = await connection.getBalance(publicKey);
+        setBalance(lamports / LAMPORTS_PER_SOL);
+      }
+    };
+
+    fetchBalance();
+  }, [connection, publicKey]); // Add publicKey as a dependency
+
+  return <div>Balance: {balance} SOL</div>;
+};
+
+export default BalanceDisplay;
+```
+
+### Example 2: Fetching Balance for Any Public Key
+```ts
+import React, { useState, useEffect } from "react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
+
+const PublicKeyBalanceDisplay = () => {
+  const { connection } = useConnection();
+  const { publicKey } = useWallet();
+  const [publicKeyInput, setPublicKeyInput] = useState<string>("");
+  const [balance, setBalance] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  // Set the connected wallet address as the default input value when available
+  useEffect(() => {
+    if (publicKey) {
+      setPublicKeyInput(publicKey.toBase58());
+    }
+  }, [publicKey]);
+
+  const fetchAccountBalance = async (publicKeyString: string) => {
+    if (!publicKeyString.trim()) {
+      setError("Please enter a public key");
+      return;
+    }
+
+    try {
+      const publicKey = new PublicKey(publicKeyString);
+      console.log("publicKey", publicKey.toBase58());
+      const lamports = await connection.getBalance(publicKey);
+      setBalance(lamports / LAMPORTS_PER_SOL);
+      setError(null);
+    } catch (error) {
+      console.error("Error fetching balance:", error);
+      setError(
+        error instanceof Error ? error.message : "An unknown error occurred"
+      );
+      setBalance(null);
+    }
+  };
+
+  return (
+    <div className="p-4 max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+      <div className="mb-4">
+        <label
+          htmlFor="publicKey"
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Wallet Address
+        </label>
+        <input
+          id="publicKey"
+          type="text"
+          value={publicKeyInput}
+          onChange={(e) => setPublicKeyInput(e.target.value)}
+          placeholder="Enter Solana public key"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-black"
+        />
+      </div>
+      <button
+        onClick={() => fetchAccountBalance(publicKeyInput)}
+        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150"
+      >
+        Get Balance
+      </button>
+
+      {error && (
+        <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+          {error}
+        </div>
+      )}
+
+      {balance !== null && (
+        <div className="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+          <span className="font-bold">Balance:</span> {balance} SOL
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PublicKeyBalanceDisplay;
+
+```
+
+#### **Returns**
+The `useConnection` hook returns an object with the following structure:
+
+```ts
+{
+    connection: Connection;  // The current connection to the Solana blockchain
+}
+```
+
+
+

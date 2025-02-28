@@ -1,0 +1,59 @@
+
+---
+id: my-hidden-page
+title: Hidden Page
+sidebar_position: 1
+---
+
+
+
+# **BaseWalletDisconnectButton**  
+
+## **Overview**  
+`BaseWalletDisconnectButton` is a UI component from `@solana/wallet-adapter-react-ui` that provides a button to disconnect a connected Solana wallet. It handles state management, UI updates, and interaction with `useWalletDisconnectButton` internally.  
+
+## **Import**  
+To use `BaseWalletDisconnectButton`, import it as follows:  
+```tsx
+import { BaseWalletDisconnectButton } from '@solana/wallet-adapter-react-ui';
+```
+
+## **Usage**  
+You can use `BaseWalletDisconnectButton` inside your React components to allow users to disconnect their wallets.  
+```tsx
+import React from 'react';
+import { BaseWalletDisconnectButton } from '@solana/wallet-adapter-react-ui';
+
+export default function DisconnectWallet() {
+    return <BaseWalletDisconnectButton labels={{ disconnecting: 'Disconnecting...', ready: 'Disconnect' }} />;
+}
+```
+
+## **Props (Parameters)**  
+`BaseWalletDisconnectButton` accepts the following props:  
+
+| **Prop**   | **Type**  | **Description** |
+|------------|-----------|----------------|
+| `labels`  | `{ [TButtonState: string]: string }` | A mapping of button states (`disconnecting`, `ready`, etc.) to display labels. |
+| `disabled` | `boolean` | (Optional) If `true`, disables the button. |
+| `onClick`  | `(event: React.MouseEvent<HTMLButtonElement>) => void` | (Optional) Callback function triggered when the button is clicked. |
+
+## **Return Type**  
+`BaseWalletDisconnectButton` returns a React component that renders a styled disconnect button.  
+
+## **Example with Custom Labels**  
+```tsx
+import React from 'react';
+import { BaseWalletDisconnectButton } from '@solana/wallet-adapter-react-ui';
+
+export default function DisconnectButtonExample() {
+    return (
+        <BaseWalletDisconnectButton
+            labels={{
+                disconnecting: 'Logging out...',
+                ready: 'Sign Out',
+            }}
+        />
+    );
+}
+```

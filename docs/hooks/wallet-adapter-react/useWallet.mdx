@@ -1,0 +1,133 @@
+---
+sidebar_position: 4
+---
+
+# `useWallet` Hook
+
+## Overview
+`useWallet` is a custom React hook from `@solana/wallet-adapter-react` that provides access to the `WalletContext`. This hook enables interaction with the user's Solana wallet by retrieving wallet details, connection status, and functions for connecting, disconnecting, and signing transactions.
+
+## Import
+To use `useWallet`, import it in your component:
+```ts
+import { useWallet } from '@solana/wallet-adapter-react';
+```
+
+## Usage
+You can use `useWallet` to manage wallet interactions in your components.
+
+### Wallet Connection Status
+```tsx
+import React from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+
+const WalletStatus = () => {
+  const { publicKey, connected } = useWallet();
+
+  return (
+    <div>
+      {connected ? (
+        <p>Connected Wallet: {publicKey?.toString()}</p>
+      ) : (
+        <p>No wallet connected</p>
+      )}
+    </div>
+  );
+};
+
+export default WalletStatus;
+```
+
+### Wallet Connection
+```tsx
+"use client";
+
+import React, { useState } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+
+export default function WalletConnect() {
+  const { connected, publicKey, select, connect, disconnect, wallets } =
+    useWallet();
+  const [error, setError] = useState<string | null>(null);
+
+  const handleConnect = async () => {
+    try {
+      setError(null);
+      if (wallets.length === 0) {
+        throw new Error("No wallets found");
+      }
+      await select(wallets[0].adapter.name);
+      await connect();
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
+      console.error("Failed to connect wallet:", err);
+    }
+  };
+
+  const handleDisconnect = async () => {
+    try {
+      await disconnect();
+    } catch (err) {
+      console.error("Failed to disconnect wallet:", err);
+    }
+  };
+
+  return (
+    <div className="p-4 max-w-md mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Solana Wallet Connection</h1>
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+      {connected ? (
+        <div className="space-y-4">
+          <p className="text-green-500">
+            Connected to: {publicKey?.toBase58()}
+          </p>
+          <button
+            onClick={handleDisconnect}
+            className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+          >
+            Disconnect
+          </button>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          <p>Please connect your wallet to continue.</p>
+          <button
+            onClick={handleConnect}
+            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+          >
+            Connect Wallet
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+```
+
+## Return Values
+`useWallet` returns an object containing wallet-related properties and functions:
+
+### Properties
+- `publicKey`: The public key of the connected wallet (`PublicKey | null`).
+- `connected`: Boolean indicating whether the wallet is connected.
+- `connecting`: Boolean indicating if the wallet is in the process of connecting.
+- `disconnecting`: Boolean indicating if the wallet is in the process of disconnecting.
+- `wallet`: The currently selected wallet (`Wallet | null`).
+- `wallets`: An array of available wallets.
+- `autoConnect`: Boolean indicating if auto-connect is enabled.
+
+### Functions
+- `connect()`: Connects to the selected wallet.
+- `disconnect()`: Disconnects the connected wallet.
+- `select(walletName: WalletName | null)`: Selects a wallet by name.
+- `sendTransaction(transaction: Transaction, connection: Connection, options?: SendOptions)`: Sends a transaction.
+- `signTransaction(transaction: Transaction)`: Signs a transaction (if supported).
+- `signAllTransactions(transactions: Transaction[])`: Signs multiple transactions (if supported).
+- `signMessage(message: Uint8Array)`: Signs a message (if supported).
+- `signIn()`: Authenticates using the wallet (if supported).
+

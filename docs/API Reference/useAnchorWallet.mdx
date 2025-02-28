@@ -1,0 +1,32 @@
+---
+sidebar_position: 7
+---
+
+## useAnchorWallet
+
+### Overview
+The `useAnchorWallet` hook transforms the wallet adapter state into an Anchor-compatible wallet interface.
+
+### Functionality
+Enables seamless integration with the Anchor framework by exposing the connected wallet in the required format.
+
+### Returns
+The connected wallet object in an Anchor-compatible structure, or `null` if no wallet is connected.
+
+### Example
+```tsx
+import React from 'react';
+import { useAnchorWallet } from '@solana/wallet-adapter-react';
+
+const AnchorComponent = () => {
+  const wallet = useAnchorWallet();
+
+  return wallet ? (
+    <div>Wallet: {wallet.publicKey.toString()}</div>
+  ) : (
+    <div>No wallet connected</div>
+  );
+};
+
+export default AnchorComponent;
+```

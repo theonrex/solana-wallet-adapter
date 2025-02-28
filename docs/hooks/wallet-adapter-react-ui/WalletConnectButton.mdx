@@ -1,0 +1,55 @@
+Here's the documentation for **`WalletConnectButton`**:
+
+---
+
+# **WalletConnectButton**  
+
+## **Overview**  
+`WalletConnectButton` is a UI component that provides a simple button for users to connect their Solana wallet. It acts as a wrapper around `BaseWalletConnectButton` and provides default labels for different connection states.  
+
+## **Import**  
+To use `WalletConnectButton`, import it as follows:  
+```tsx
+import { WalletConnectButton } from '@solana/wallet-adapter-react-ui';
+```
+
+## **Usage**  
+Use `WalletConnectButton` to allow users to connect their Solana wallet.  
+```tsx
+import React from 'react';
+import { WalletConnectButton } from '@solana/wallet-adapter-react-ui';
+
+export default function ConnectWallet() {
+    return <WalletConnectButton />;
+}
+```
+
+## **Props (Parameters)**  
+`WalletConnectButton` accepts all props from `BaseWalletConnectButton`, including:  
+
+| **Prop**   | **Type**  | **Description** |
+|------------|-----------|----------------|
+| `disabled` | `boolean` | (Optional) If `true`, disables the button. |
+| `onClick`  | `(event: React.MouseEvent<HTMLButtonElement>) => void` | (Optional) Callback function triggered when the button is clicked. |
+
+## **Return Type**  
+`WalletConnectButton` returns a React component that renders a styled button for wallet connection.
+
+## **Example with Custom Props**  
+```tsx
+import React from 'react';
+import { WalletConnectButton } from '@solana/wallet-adapter-react-ui';
+
+export default function CustomWalletButton() {
+    return (
+        <WalletConnectButton
+            disabled={false}
+            onClick={() => console.log('Wallet button clicked')}
+        />
+    );
+}
+```
+
+---
+
+Would you like additional details, such as event-handling examples or UI customization tips?

@@ -1,0 +1,70 @@
+---
+sidebar_position: 5
+---
+
+## Overview
+`useLocalStorage` is a custom React hook that allows you to sync a piece of state with the browser's `localStorage`. This hook enables you to persist state across page reloads, making it useful for saving user preferences or other persistent data, without the need for server-side storage.
+
+## **Used For**
+This hook is typically used in frontend applications to ensure that data (e.g., user settings, wallet addresses, etc.) is retained even after the page is reloaded. It integrates React's state management with `localStorage`, so that the state is saved and retrieved automatically.
+
+#### **Import**
+```ts
+import { useLocalStorage } from '@solana/wallet-adapter-react';
+```
+
+## **Usage**
+You can use the `useLocalStorage` hook in your React components just like `useState`, but the state will be synchronized with `localStorage`, ensuring persistence.
+
+
+### Example: Solana Network Selector with LocalStorage
+
+
+```tsx
+import React from "react";
+import { useLocalStorage } from "@solana/wallet-adapter-react";
+
+const NetworkSelector = () => {
+  const [network, setNetwork] = useLocalStorage("solana-network", "mainnet");
+
+  return (
+    <div className="flex flex-col items-center justify-center p-6 bg-gray-100 dark:bg-gray-900 ">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          Select Solana Network
+        </h2>
+        <p className="text-gray-600 dark:text-gray-400 mb-4">
+          Current Network: <span className="font-bold">{network}</span>
+        </p>
+        <select
+          value={network}
+          onChange={(e) => setNetwork(e.target.value)}
+          className="w-full p-2 border rounded-md  dark:bg-gray-700 text-slate-950 border-gray-600"
+        >
+          <option value="mainnet">Mainnet</option>
+          <option value="devnet">Devnet</option>
+          <option value="testnet">Testnet</option>
+        </select>{" "}
+        <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+          ✅ Your selection is saved! Open your browser's DevTools (
+          <span className="font-semibold">
+            F12 → Application → Local Storage
+          </span>
+          ) to confirm it persists.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default NetworkSelector;
+
+```
+
+
+#### **Parameters**
+- **`key`**: A string key to store the value under in `localStorage`.
+- **`defaultState`**: The default value to use when no value is found in `localStorage`.
+
+### Returns
+A tuple `[value, setValue]` for managing stored values.

@@ -1,0 +1,47 @@
+---
+sidebar_position: 3
+---
+
+
+## Overview
+
+The `WalletModalProvider` is a React context provider that manages the visibility and state of the wallet modal, allowing users to connect their wallets through a UI modal.
+
+## Import
+
+```tsx
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+```
+
+## Usage
+
+Wrap your application with `WalletModalProvider` to enable the wallet connection modal.
+
+```tsx
+import React, { ReactNode } from "react";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
+
+const App = ({ children }: { children: ReactNode }) => {
+  return <WalletModalProvider>{children} </WalletModalProvider>;
+};
+
+export default App;
+
+
+```
+
+## Props
+
+`WalletModalProvider` extends `WalletModalProps`, meaning it accepts all props from `WalletModal`.
+
+| Prop       | Type         | Required | Description |
+|------------|-------------|----------|-------------|
+| `children` | `ReactNode` | ✅        | Components that will have access to the modal. |
+
+## Returns
+
+`WalletModalProvider` returns a React context provider that enables the wallet connection modal for all child components. Specifically, it provides:
+
+- A modal UI that allows users to select and connect their Solana wallet.
+- Context management for the modal’s visibility and state.
+- Automatic integration with `@solana/wallet-adapter-react` for handling wallet connections.

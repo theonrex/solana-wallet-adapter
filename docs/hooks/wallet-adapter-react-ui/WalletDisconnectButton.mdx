@@ -1,0 +1,55 @@
+# WalletDisconnectButton
+
+## Overview
+The `WalletDisconnectButton` is a React component from the `@solana/wallet-adapter-react-ui` package. It provides a button for disconnecting a connected Solana wallet. The button dynamically updates its label based on the wallet connection state.
+
+## Import
+```tsx
+import { WalletDisconnectButton } from '@solana/wallet-adapter-react-ui';
+```
+
+## Usage
+```tsx
+import React from 'react';
+import { WalletDisconnectButton } from '@solana/wallet-adapter-react-ui';
+
+function MyComponent() {
+    return (
+        <div>
+            <WalletDisconnectButton />
+        </div>
+    );
+}
+
+export default MyComponent;
+```
+
+## Example
+### With Custom Styling
+```tsx
+import React from 'react';
+import { WalletDisconnectButton } from '@solana/wallet-adapter-react-ui';
+
+function CustomButton() {
+    return (
+        <WalletDisconnectButton style={{ backgroundColor: 'red', color: 'white' }} />
+    );
+}
+
+export default CustomButton;
+```
+
+## Parameters
+| Name  | Type      | Default | Description |
+|--------|-----------|-----------|-------------|
+| `className` | `string` | `''` | Additional CSS classes for styling. |
+| `disabled` | `boolean` | `false` | Disables the button when `true`. |
+| `endIcon` | `ReactElement` | `undefined` | Icon displayed at the end of the button. |
+| `onClick` | `(e: MouseEvent<HTMLButtonElement>) => void` | `undefined` | Callback function triggered on click. |
+| `startIcon` | `ReactElement` | `undefined` | Icon displayed at the start of the button. |
+| `style` | `CSSProperties` | `{}` | Inline styles for the button. |
+| `tabIndex` | `number` | `0` | Keyboard navigation index. |
+
+## Return Type
+The `WalletDisconnectButton` returns a JSX element rendering a styled button that allows users to disconnect their Solana wallet.
+

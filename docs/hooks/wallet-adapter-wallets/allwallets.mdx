@@ -1,0 +1,96 @@
+# Solana Wallets Integration Guide
+
+This guide provides an overview of various Solana wallets, their integration into your frontend application, and the necessary imports to use them effectively.
+
+## 1. Overview
+Solana supports multiple wallets that allow users to interact with dApps securely. The `@solana/wallet-adapter` ecosystem provides a unified way to integrate these wallets into your application.
+
+## 2. Installing Required Dependencies
+Before integrating wallets, install the required packages:
+```sh
+npm install @solana/wallet-adapter-wallets @solana/wallet-adapter-react-ui @solana/wallet-adapter-base
+```
+
+## 3. Importing Wallet Adapters
+To use the wallets in your frontend, import the necessary adapters:
+```ts
+import {
+    PhantomWalletAdapter,
+    SolflareWalletAdapter,
+    LedgerWalletAdapter,
+    TorusWalletAdapter,
+    MathWalletAdapter,
+    TrustWalletAdapter,
+    Coin98WalletAdapter,
+    WalletConnectWalletAdapter,
+} from "@solana/wallet-adapter-wallets";
+```
+
+## 4. List of Supported Wallets
+Here is a categorized list of supported wallets:
+
+### Popular Wallets
+These wallets are widely used and supported by most Solana applications.
+```ts
+import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { SolflareWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { LedgerWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { WalletConnectWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { TorusWalletAdapter } from "@solana/wallet-adapter-wallets";
+```
+
+### Browser & Mobile Wallets
+These wallets work well on mobile devices and browser extensions.
+```ts
+import { Coin98WalletAdapter } from "@solana/wallet-adapter-wallets";
+import { TrustWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { SpotWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { TokenaryWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { SolongWalletAdapter } from "@solana/wallet-adapter-wallets";
+```
+
+### Hardware Wallets
+For enhanced security, you can use hardware wallets.
+```ts
+import { LedgerWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { TrezorWalletAdapter } from "@solana/wallet-adapter-wallets";
+```
+
+### Other Wallets
+Additional supported wallets for specific use cases.
+```ts
+import { AlphaWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { AvanaWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { BitKeepWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { NekoWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { SkyWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { OntoWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { HuobiWalletAdapter } from "@solana/wallet-adapter-wallets";
+```
+
+## 5. Using Wallets in Your Application
+After importing the wallets, configure them in your Solana dApp as follows:
+```ts
+import { WalletProvider } from '@solana/wallet-adapter-react';
+import { ConnectionProvider } from '@solana/wallet-adapter-react';
+
+const wallets = [
+    new PhantomWalletAdapter(),
+    new SolflareWalletAdapter(),
+    new LedgerWalletAdapter(),
+    new TorusWalletAdapter(),
+];
+
+function App() {
+    return (
+        <ConnectionProvider endpoint={"https://api.mainnet-beta.solana.com"}>
+            <WalletProvider wallets={wallets} autoConnect>
+                <YourComponent />
+            </WalletProvider>
+        </ConnectionProvider>
+    );
+}
+```
+
+For more details, check out the [Solana Wallet Adapter GitHub](https://github.com/solana-labs/wallet-adapter). 🚀
+

@@ -1,0 +1,268 @@
+---
+sidebar_position: 7
+---
+
+
+## Overview
+`useAnchorWallet` is a React hook that provides access to an `AnchorWallet` object if a wallet is connected. This is useful for applications using the [Anchor](https://project-serum.github.io/anchor/) framework to interact with Solana smart contracts.
+
+
+## Import
+
+```tsx
+import { useAnchorWallet } from '@solana/wallet-adapter-react';
+```
+
+## Usage Example
+
+```tsx
+import { useAnchorWallet } from '@solana/wallet-adapter-react';
+
+const MyComponent = () => {
+    const wallet = useAnchorWallet();
+
+    if (!wallet) {
+        return <div>Please connect a wallet.</div>;
+    }
+
+    return <div>Connected Wallet: {wallet.publicKey.toBase58()}</div>;
+};
+```
+## Returns
+
+The hook returns an `AnchorWallet` object if a wallet is connected; otherwise, it returns `undefined`.
+
+### AnchorWallet Object
+
+| Property               | Type                                                                | Description |
+|------------------------|---------------------------------------------------------------------|-------------|
+| `publicKey`            | `PublicKey`                                                         | The connected wallet's public key. |
+| `signTransaction`      | `(transaction: Transaction \| VersionedTransaction) => Promise<Transaction \| VersionedTransaction>` | Signs a single transaction. |
+| `signAllTransactions`  | `(transactions: Transaction[] \| VersionedTransaction[]) => Promise<Transaction[] \| VersionedTransaction[]>` | Signs multiple transactions at once. |
+
+## Examples
+
+### Accessing the Public Key
+
+You can easily access the connected wallet's public key with the `publicKey` property. It returns a `PublicKey` object, which you can convert to a base58 string for display.
+
+```tsx
+"use client";
+
+import { useAnchorWallet } from "@solana/wallet-adapter-react";
+
+export default function MyComponent() {
+  const wallet = useAnchorWallet(); // Gets the connected wallet for Anchor
+
+  if (!wallet) return <div>Connect your wallet</div>;
+
+  return <div>Wallet Connected: {wallet.publicKey.toBase58()}</div>;
+}
+
+```
+### Signing Transactions
+
+Installing Dependencies
+
+Before testing useAnchorWallet for signing transactions, install the required package:
+
+```tsx
+npm install @project-serum/anchor
+```
+
+### Import the IDL (Interface Definition Language)
+
+Anchor programs require an IDL file, which describes the smart contract’s structure.
+
+```json
+{
+  "version": "0.1.0",
+  "name": "hello_anchor",
+  "instructions": [
+    {
+      "name": "initialize",
+      "accounts": [
+        { "name": "newAccount", "isMut": true, "isSigner": true },
+        { "name": "signer", "isMut": true, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": [{ "name": "data", "type": "u64" }]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "NewAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [{ "name": "data", "type": "u64" }]
+      }
+    }
+  ]
+}
+```
+
+Anchor Code was generated and deployed using the solana playground ide at https://beta.solpg.io/67bef183cffcf4b13384d6de
+
+### Signing a Transaction
+
+The `signTransaction` function allows you to sign a single transaction. You can use this function with a `Transaction` or `VersionedTransaction`.
+
+```tsx
+"use client";
+
+import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { Connection, PublicKey, SystemProgram } from "@solana/web3.js";
+import { AnchorProvider, Program, web3, BN } from "@project-serum/anchor";
+import idlRaw from "./idl.json"; 
+
+const programId = new PublicKey("8FQSbn7XNr6T9RJpeCaUVdtm2PtxLbTp3kNUm8Y3ZW82");
+const network = "https://api.devnet.solana.com";
+
+const idl = JSON.parse(JSON.stringify(idlRaw)); // Ensures it's properly parsed
+
+export default function MyComponent() {
+  const wallet = useAnchorWallet();
+
+  if (!wallet) return <div>Please connect a wallet.</div>;
+
+  const connection = new Connection(network, "processed");
+  const provider = new AnchorProvider(connection, wallet, {
+    preflightCommitment: "processed",
+  });
+  const program = new Program(idl, programId, provider);
+
+  const handleTransaction = async () => {
+    try {
+      const newAccount = web3.Keypair.generate();
+
+      const txSignature = await program.methods
+        .initialize(new BN(42)) // Call Anchor function
+        .accounts({
+          newAccount: newAccount.publicKey,
+          signer: provider.wallet.publicKey,
+          systemProgram: SystemProgram.programId,
+        })
+        .signers([newAccount])
+        .rpc(); // Executes transaction
+
+      console.log("Transaction successful! Signature:", txSignature);
+    } catch (error) {
+      console.error("Transaction failed:", error);
+    }
+  };
+
+  return (
+    <div>
+      {" "}
+      <button onClick={handleTransaction}>Send Transaction</button>
+    </div>
+  );
+}
+
+ 
+```
+
+### Signing Multiple Transactions
+
+You can also sign multiple transactions at once using the `signAllTransactions` function. This method accepts an array of `Transaction` or `VersionedTransaction` objects.
+
+```tsx
+
+import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import {
+  Connection,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
+import { AnchorProvider, Program, web3, BN } from "@project-serum/anchor";
+import idlRaw from "./idl.json"; 
+
+const programId = new PublicKey("8FQSbn7XNr6T9RJpeCaUVdtm2PtxLbTp3kNUm8Y3ZW82");
+const network = "https://api.devnet.solana.com";
+const idl = JSON.parse(JSON.stringify(idlRaw)); // Ensures it's properly parsed
+
+const MyComponent = () => {
+  const wallet = useAnchorWallet();
+  if (!wallet) return <div>Please connect a wallet.</div>;
+
+  const connection = new Connection(network, "processed");
+  const provider = new AnchorProvider(connection, wallet, {
+    preflightCommitment: "processed",
+  });
+  const program = new Program(idl, programId, provider);
+
+  const handleSignAndSendAllTransactions = async () => {
+    try {
+      const newAccount1 = web3.Keypair.generate();
+      const newAccount2 = web3.Keypair.generate();
+
+      // Fetch fresh blockhash for transaction 1
+      let { blockhash } = await connection.getLatestBlockhash("finalized");
+
+      // First transaction
+      let tx1 = new Transaction().add(
+        await program.methods
+          .initialize(new BN(42))
+          .accounts({
+            newAccount: newAccount1.publicKey,
+            signer: provider.wallet.publicKey,
+            systemProgram: SystemProgram.programId,
+          })
+          .instruction()
+      );
+      tx1.recentBlockhash = blockhash;
+      tx1.feePayer = provider.wallet.publicKey;
+      tx1.partialSign(newAccount1); // Ensure newAccount1 signs
+
+      // Fetch fresh blockhash for transaction 2
+      blockhash = (await connection.getLatestBlockhash("finalized")).blockhash;
+
+      // Second transaction
+      let tx2 = new Transaction().add(
+        await program.methods
+          .initialize(new BN(99))
+          .accounts({
+            newAccount: newAccount2.publicKey,
+            signer: provider.wallet.publicKey,
+            systemProgram: SystemProgram.programId,
+          })
+          .instruction()
+      );
+      tx2.recentBlockhash = blockhash;
+      tx2.feePayer = provider.wallet.publicKey;
+      tx2.partialSign(newAccount2); // Ensure newAccount2 signs
+
+      // Sign transactions
+      const signedTransactions = await wallet.signAllTransactions([tx1, tx2]);
+
+      // Send transactions
+      const txSignatures = await Promise.all(
+        signedTransactions.map(async (signedTx) => {
+          const txSignature = await connection.sendRawTransaction(
+            signedTx.serialize()
+          );
+          await connection.confirmTransaction(txSignature, "finalized"); // Ensure it's confirmed
+          return txSignature;
+        })
+      );
+
+      console.log("Transactions sent successfully!", txSignatures);
+    } catch (error) {
+      console.error("Signing or sending transactions failed:", error);
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={handleSignAndSendAllTransactions}>
+        Sign & Send All Transactions
+      </button>
+    </div>
+  );
+};
+
+export default MyComponent;
+
+
+```

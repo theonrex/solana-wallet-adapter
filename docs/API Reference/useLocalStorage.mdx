@@ -1,0 +1,39 @@
+---
+sidebar_position: 5
+---
+
+## useLocalStorage
+
+### Overview
+The `useLocalStorage` hook enables seamless state management with local storage.
+
+### Functionality
+Provides a state-like interface for storing and retrieving values from local storage.
+
+### Parameters
+- **key** (`string`): The storage key.
+- **initialValue** (`T`): The default value if no stored data exists.
+
+### Returns
+A tuple `[value, setValue]` for managing stored values.
+
+### Example
+```tsx
+import React from 'react';
+import { useLocalStorage } from '@solana/wallet-adapter-react';
+
+const ThemeToggle = () => {
+  const [theme, setTheme] = useLocalStorage('theme', 'light');
+
+  return (
+    <div>
+      <p>Current theme: {theme}</p>
+      <button onClick={() => setTheme('dark')}>Dark Mode</button>
+    </div>
+  );
+};
+
+export default ThemeToggle;
+```
+
+---

@@ -1,0 +1,226 @@
+---
+sidebar_position: 3
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Getting Started
+
+**To install the Solana Wallet Adapter and its dependencies, run the following command in your project directory:**
+
+
+<Tabs>
+
+  <TabItem value="npm" label="Npm" default>
+    ``` tsx
+  npm install @solana/wallet-adapter-react @solana/wallet-adapter-base @solana/wallet-adapter-wallets @solana/web3.js @solana/wallet-adapter-react-ui
+    ```
+  </TabItem>  <TabItem value="yarn" label="Yarn" default>
+    ``` tsx
+ yarn add @solana/wallet-adapter-react @solana/wallet-adapter-base @solana/wallet-adapter-wallets @solana/web3.js @solana/wallet-adapter-react-ui
+    ```
+  </TabItem>
+
+</Tabs>
+
+**This command installs the core wallet adapter packages along with the Solana web3.js library and the React UI components.**
+
+
+
+
+## App Router Basic Setup
+
+After installation, you need to set up the wallet adapter in your Next.js application. Here's a basic setup:
+
+### 1. Create the Wallet Provider
+
+Create a new file called `WalletConnectionProvider.tsx` in your `src` directory:
+
+```tsx
+// WalletConnectionProvider.tsx
+"use client"; 
+
+import { createContext, ReactNode, useContext } from "react";
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from "@solana/wallet-adapter-react";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
+import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { clusterApiUrl } from "@solana/web3.js";
+
+// Default styles that can be overridden by your app
+require("@solana/wallet-adapter-react-ui/styles.css");
+
+const WalletContext = createContext(null);
+
+export const WalletConnectionProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+  const network = clusterApiUrl("devnet"); // Change to 'mainnet-beta' if needed
+  const wallets = [new PhantomWalletAdapter()];
+
+  return (
+    <ConnectionProvider endpoint={network}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>{children}</WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
+  );
+};
+
+export const useWalletConnection = () => useContext(WalletContext);
+```
+
+
+
+### 2. Wrap the Layout with the Provider
+
+Wrap your main App component with the WalletConnectionProvider in your pages **layout.tsx**:
+
+```tsx
+"use client"; 
+
+import { WalletConnectionProvider } from "./WalletConnectionProvider";
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en">
+      {" "}
+      <WalletConnectionProvider>
+        <body>{children}</body>
+      </WalletConnectionProvider>
+    </html>
+  );
+}
+```
+
+### Usage Example
+
+Create a home page in app/page.tsx:
+
+
+```tsx
+"use client"; 
+
+import React from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+
+const WalletConnection = () => {
+  const { publicKey } = useWallet();
+
+  return (
+    <div>
+      <WalletMultiButton />
+      {publicKey && (
+        <p>Your wallet is connected! Public key: {publicKey.toBase58()}</p>
+      )}
+    </div>
+  );
+};
+
+export default WalletConnection;
+```
+
+## Page Router Basic Setup
+
+***If your project follows the Next.js routing (pages/ directory), follow these steps.***
+
+After installation, you need to set up the wallet adapter in your Next.js application. Here's a basic setup:
+
+### 1. Create the Wallet Provider
+
+Create a new file called `WalletConnectionProvider.tsx` in your `contexts` directory:
+
+```tsx
+// WalletConnectionProvider.tsx
+import { createContext, ReactNode, useContext } from "react";
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from "@solana/wallet-adapter-react";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
+import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
+import { clusterApiUrl } from "@solana/web3.js";
+
+// Default styles that can be overridden by your app
+require("@solana/wallet-adapter-react-ui/styles.css");
+
+const WalletContext = createContext(null);
+
+export const WalletConnectionProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+  const network = clusterApiUrl("devnet"); // Change to 'mainnet-beta' if needed
+  const wallets = [new PhantomWalletAdapter()];
+
+  return (
+    <ConnectionProvider endpoint={network}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>{children}</WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
+  );
+};
+
+export const useWalletConnection = () => useContext(WalletContext);
+```
+
+
+
+### 2. Wrap the _app.tsx File
+
+Modify the pages/_app.tsx file to wrap the entire application with the wallet provider.
+
+```tsx
+import "../styles/globals.css";
+import type { AppProps } from "next/app";
+import { WalletConnectionProvider } from "../contexts/WalletConnectionProvider";
+
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <WalletConnectionProvider>
+      <Component {...pageProps} />
+    </WalletConnectionProvider>
+  );
+}
+```
+
+### Usage Example
+
+Now, create a simple UI to display the wallet connection button in pages/index.tsx.
+
+
+```tsx
+import React from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+
+const WalletConnection = () => {
+  const { publicKey } = useWallet();
+
+  return (
+    <div>
+      <WalletMultiButton />
+      {publicKey && (
+        <p>Your wallet is connected! Public key: {publicKey.toBase58()}</p>
+      )}
+    </div>
+  );
+};
+
+export default WalletConnection;
+```
+ 
+
+

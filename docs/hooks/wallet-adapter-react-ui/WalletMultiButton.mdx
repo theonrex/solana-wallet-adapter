@@ -1,0 +1,50 @@
+# WalletMultiButton 
+
+## Overview
+The `WalletMultiButton` component is a UI element from the `@solana/wallet-adapter-react-ui` package. It provides a button for users to connect, switch, copy, or disconnect their Solana wallet seamlessly.
+
+## Import
+```tsx
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+```
+
+## Usage
+```tsx
+import React from 'react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+
+function App() {
+    return (
+        <div>
+            <WalletMultiButton />
+        </div>
+    );
+}
+
+export default App;
+```
+
+## Example
+```tsx
+import React from 'react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+
+function MyComponent() {
+    return (
+        <div>
+            <h1>Connect to Solana</h1>
+            <WalletMultiButton />
+        </div>
+    );
+}
+
+export default MyComponent;
+```
+
+## Parameters
+| Parameter   | Type       | Description |
+|------------|-----------|-------------|
+| `props`    | `ButtonProps` | Additional button properties passed to the underlying button component. |
+
+## Return Type
+The `WalletMultiButton` function returns a React component that renders a styled button with different states based on the user's wallet connection status.

@@ -1,0 +1,41 @@
+---
+sidebar_position: 4
+---
+## useWallet
+
+### Overview
+The `useWallet` hook provides access to wallet-related state and operations.
+
+### Functionality
+Exposes properties such as connection status, public key, and utility functions.
+
+### Returns
+An object containing:
+- `publicKey`
+- `connected`
+- `connecting`
+- `sendTransaction`
+
+### Example
+```tsx
+import React from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
+
+const WalletStatus = () => {
+  const { publicKey, connected } = useWallet();
+
+  return (
+    <div>
+      {connected ? (
+        <p>Connected Wallet: {publicKey?.toString()}</p>
+      ) : (
+        <p>No wallet connected</p>
+      )}
+    </div>
+  );
+};
+
+export default WalletStatus;
+```
+
+---

@@ -1,0 +1,31 @@
+{/* ---
+sidebar_position: 8
+---
+
+## errors
+
+### Overview
+The `errors` module contains predefined error classes and types for handling wallet-related issues efficiently.
+
+### Functionality
+Provides structured error handling for scenarios such as missing wallet connections and failed transactions.
+
+### Returns
+Instances of error objects that standardize error management.
+
+### Example
+```ts
+import { WalletNotConnectedError } from '@solana/wallet-adapter-react';
+
+function executeTransaction(wallet) {
+  if (!wallet.connected) {
+    throw new WalletNotConnectedError('Please connect a wallet to proceed.');
+  }
+  // Transaction logic here...
+}
+```
+
+
+
+
+ */}

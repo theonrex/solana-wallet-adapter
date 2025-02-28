@@ -1,0 +1,54 @@
+---
+sidebar_position: 2
+---
+
+## Overview 
+
+WalletProvider is a React context provider that handles wallet connectivity for your Solana application. It allows users to connect their wallets (e.g., Phantom, Solflare) and facilitates wallet-related operations like signing transactions or viewing balances.
+
+## Import
+
+```tsx
+import { WalletProvider } from '@solana/wallet-adapter-react';
+```
+
+### Example
+
+
+```tsx
+import { WalletProvider } from '@solana/wallet-adapter-react';
+import { PhantomWalletAdapter, TorusWalletAdapter , LedgerWalletAdapter} from '@solana/wallet-adapter-wallets';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const wallets = [
+    new PhantomWalletAdapter(),
+    new TorusWalletAdapter(),
+    new LedgerWalletAdapter(),
+  ];
+
+  return (
+    <WalletProvider wallets={wallets} autoConnect>
+      {children}
+    </WalletProvider>
+  );
+}
+```
+
+### Imports for Wallet Adapters
+To integrate specific wallets into your Solana application, simply import them as needed. For a structured approach, refer to [this guide](../wallet-adapter-wallets/allwallets.mdx), which categorizes popular wallets based on their purpose and type.
+
+
+
+### Functionality
+Wraps an application to provide wallet connection functionality and handles errors gracefully.
+
+### Parameters
+- **wallets** (`WalletAdapter[]`): An array of supported wallets.
+- **autoConnect** (`boolean`): Enables automatic reconnection.
+- **onError** (`(error: WalletError) => void`): Error handling callback.
+- **children** (`ReactNode`): Child components that require wallet access.
+
+### Returns
+A React context provider that manages wallet connections.
+
+

@@ -1,9 +1,11 @@
 {
-  "label": "API Reference",
-  "position": 3,
+  "label": "wallet-adapter-react",
+  "position": 1,
   "link": {
     "type": "generated-index",
     "description": "This section provides detailed information about the core components and functions of the Solana Wallet Adapter.  "
   },
-  "sidebar_position": 3
+  "sidebar_position": 1
 }
+
+

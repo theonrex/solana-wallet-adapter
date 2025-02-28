@@ -1,0 +1,44 @@
+---
+sidebar_position: 1
+---
+
+## Overview
+ConnectionProvider is a React context provider. It allows your application to connect to a specific Solana network endpoint (such as the mainnet, devnet, or testnet). Once connected, it shares this connection with all its child components, enabling them to interact with the blockchain seamlessly.
+
+## Import
+
+```tsx
+import { ConnectionProvider } from '@solana/wallet-adapter-react';
+```
+
+## **Usage:**
+
+Wrap your application with `ConnectionProvider` to provide a Solana RPC connection.
+
+```tsx
+//layout.tsx
+import {  ReactNode } from "react";
+import { ConnectionProvider } from '@solana/wallet-adapter-react';
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <ConnectionProvider endpoint="https://api.mainnet-beta.solana.com">
+      {children}
+    </ConnectionProvider>
+  );
+}
+```
+
+## Returns
+A React component that supplies the Solana connection context to its children.
+
+
+##  endpoint (string):
+- This is the URL of the Solana network you want your app to connect to. Common options include:
+
+  - Mainnet: https://api.mainnet-beta.solana.com (for live production environments).
+  - Devnet: https://api.devnet.solana.com (for testing purposes).
+  - Testnet: https://api.testnet.solana.com (for pre-production testing).
+  - Localnet: http://127.0.0.1:8899 (for local development).
+
+By specifying this endpoint, you tell your app which blockchain instance to use.

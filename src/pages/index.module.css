@@ -45,6 +45,13 @@
   font-size: 1.5em;
 }
 
+.intro_link:hover {
+
+  color: white;
+  text-decoration: none !important;
+
+}
+
 .HomepageWalletImage {
   width: 60%;
   display: flex;

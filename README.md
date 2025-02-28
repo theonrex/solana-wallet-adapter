@@ -1,3 +1,9 @@
+# About
+
+SolanaWalletAdapter+ is an open-source project designed to enhance the official Solana Wallet Adapter, simplifying integration and improving functionality for developers.
+
+
+
 # Website
 
 This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
