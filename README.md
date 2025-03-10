@@ -1,6 +1,6 @@
 # About
 
-SolanaWalletAdapter+ is an open-source project designed to enhance the official Solana Wallet Adapter, simplifying integration and improving functionality for developers.
+Solana Wallet Adapter Docs is an open-source project designed to enhance the official Solana Wallet Adapter, simplifying integration and improving functionality for developers.
 
 
 
